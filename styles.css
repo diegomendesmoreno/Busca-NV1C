@@ -7,7 +7,7 @@ body {
 
 header {
     text-align: center;
-    background-color: #333;
+    background-color: #4B357C;
     color: #fff;
     padding: 50px 0;
 }
@@ -27,14 +27,15 @@ header {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #CDAF05;
     cursor: pointer;
     margin-left: 10px;
+    color: #fff;
+    font-weight: bold;
 }
 
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: #7a6b00;
 }
 
 .instagram-post {

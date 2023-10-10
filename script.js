@@ -1,6 +1,4 @@
 function loadSpreadSheet() {
-    console.log("Started loadSpreadSheet");
-    
     const spreadsheetId = '1NPfi6o9JGCk6V_gmR4FE3mv7vMyrkUBdt1g_HtSUd8Y';
     const sheetName = 'Reels';
     
@@ -22,8 +20,6 @@ function getInstagramData(url) {
                 const startIdx = data.indexOf('{');
                 const endIdx = data.lastIndexOf('}');
                 const jsonData = JSON.parse(data.substring(startIdx, endIdx + 1));
-
-                console.log("Parsed JSON");
 
                 if (jsonData && jsonData.table) {
                     const rows = jsonData.table.rows;
