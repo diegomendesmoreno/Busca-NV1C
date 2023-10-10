@@ -20,6 +20,12 @@ header {
     margin-bottom: 50px;
 }
 
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
 .logo-image {
     width: 100px;
     height: 100px;
