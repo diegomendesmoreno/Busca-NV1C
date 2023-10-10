@@ -5,43 +5,51 @@ function loadSpreadSheet() {
     const sheetName = 'Reels';
     
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheetName)}`;
-    
-    axios.get(url)
-      .then((response) => {
-        const data = response.data;
-        try {
-          const startIdx = data.indexOf('{');
-          const endIdx = data.lastIndexOf('}');
-          const jsonData = JSON.parse(data.substring(startIdx, endIdx + 1));
-        
-          console.log("Parsed JSON");
-    
-          if (jsonData && jsonData.table) {
-            const rows = jsonData.table.rows;
-            
-            const jsonRows = rows.slice(1).map(row => {
-              return {
-                'Título/tema do vídeo': row.c[0].v,
-                'Link': row.c[1].v
-              };
-            });
-    
-            const numColumns = rows[0].c.length;
-            const numRows = rows.length - 1;
-            console.log(`Number of rows: ${numRows}`);
 
-            createInstagramPost(rows[2].c[1].v);
-              
-          } else {
-            console.error('Error fetching data:', jsonData);
-          }
-        } catch (error) {
-          console.error('Error parsing data:', error);
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+    getInstagramData(url)
+      .then(jsonRows => {
+        const numRows = jsonRows.length;
+        console.log(`Number of rows: ${numRows}`);
+        createInstagramPost(jsonRows[2]['Link']);
       });
+}
+
+function getInstagramData(url) {
+    return axios.get(url)
+        .then((response) => {
+            const data = response.data;
+            try {
+                const startIdx = data.indexOf('{');
+                const endIdx = data.lastIndexOf('}');
+                const jsonData = JSON.parse(data.substring(startIdx, endIdx + 1));
+
+                console.log("Parsed JSON");
+
+                if (jsonData && jsonData.table) {
+                    const rows = jsonData.table.rows;
+
+                    const jsonRows = rows.slice(1).map(row => {
+                        return {
+                            'Título/tema do vídeo': row.c[0].v,
+                            'Link': row.c[1].v
+                        };
+                    });
+
+                    return jsonRows;
+
+                } else {
+                    console.error('Error fetching data:', jsonData);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error parsing data:', error);
+                return null;
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error);
+            return null;
+        });
 }
 
 function createInstagramPost(url) {
