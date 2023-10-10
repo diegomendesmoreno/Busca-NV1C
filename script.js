@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSpreadSheet();
     
     // Add an event listener to the search button
-    document.getElementById('search-button').addEventListener('click', function() {
+    document.querySelector('.search-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevents the default form submission behavior
         const keyword = document.getElementById('keyword-input').value;
         const filteredData = filterByKeyword(jsonData, keyword);
 
