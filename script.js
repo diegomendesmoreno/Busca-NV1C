@@ -1,3 +1,87 @@
+let jsonData;
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded');
+
+    // Load the JSON
+    loadSpreadSheet();
+    
+    // Add an event listener to the search button
+    document.getElementById('search-button').addEventListener('click', function() {
+        const keyword = document.getElementById('keyword-input').value;
+        const filteredData = filterByKeyword(jsonData, keyword);
+
+        console.log(filteredData);
+        if(filteredData.length === 0)
+        {
+            // No results found
+            showError(keyword);
+        }
+        else
+        {
+            showfilteredPosts(keyword, filteredData);
+        }
+    });
+});
+
+
+function reloadItems(lastSearch) {
+    // Replace the search-bar placeholder with the last search
+    var searchBar = document.getElementById('keyword-input');
+    searchBar.value = "";
+    searchBar.placeholder = lastSearch;
+    
+    // Remove the div with id "instagram-post-container" if it exists
+    const oldInstagramPostContainer = document.getElementById('instagram-post-container');
+    if (oldInstagramPostContainer) {
+        oldInstagramPostContainer.remove();
+    }
+
+    // Create a new "instagram-post-container"
+    const instagramPostContainer = document.createElement('div');
+    instagramPostContainer.id = 'instagram-post-container';
+    document.body.appendChild(instagramPostContainer);
+    var footer = document.querySelector('footer');
+    footer.insertAdjacentElement('beforebegin', instagramPostContainer);
+}
+
+
+function showError(lastSearch) {
+    reloadItems(lastSearch);
+
+    // Show error message
+    var instagramPostContainer = document.getElementById('instagram-post-container');
+    instagramPostContainer.innerHTML = '<p>Nenhum resultado encontrado</p>';
+}
+
+
+function showfilteredPosts(lastSearch, filteredData) {
+    reloadItems(lastSearch);
+
+    // Create the filtered posts inside the container
+    for(let i = 0; i < filteredData.length; i++) {
+        createInstagramPost(filteredData[i]['Link']);
+        console.log(`Name [${i}]: ${filteredData[i]['Título/tema do vídeo']}`);
+        console.log(`Link [${i}]: ${filteredData[i]['Link']}`);
+        console.log('');
+    }
+}
+
+
+function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+
+function filterByKeyword(jsonData, keyword) {
+    const normalizedKeyword = removeAccents(keyword.toLowerCase());
+    return jsonData.filter(item => {
+        const title = removeAccents(item['Título/tema do vídeo'].toLowerCase());
+        return title.includes(normalizedKeyword);
+    });
+}
+
+
 function loadSpreadSheet() {
     const spreadsheetId = '1NPfi6o9JGCk6V_gmR4FE3mv7vMyrkUBdt1g_HtSUd8Y';
     const sheetName = 'Reels';
@@ -7,16 +91,12 @@ function loadSpreadSheet() {
     getInstagramData(url)
         .then(jsonRows => {
             const numRows = jsonRows.length;
-            console.log(`Number of rows: ${numRows}`);
+            console.log(`Loaded Spreadsheet (${numRows})`);
 
-            for(let i = 6; i <= 16; i++) {
-                createInstagramPost(jsonRows[i]['Link']);
-                console.log(`Name [${i}]: ${jsonRows[i]['Título/tema do vídeo']}`);
-                console.log(`Link [${i}]: ${jsonRows[i]['Link']}`);
-                console.log('');
-            }
+            jsonData = jsonRows;
         });
 }
+
 
 function getInstagramData(url) {
     return axios.get(url)
@@ -54,7 +134,10 @@ function getInstagramData(url) {
         });
 }
 
+
 function createInstagramPost(url) {
+    var instagramPostContainer = document.getElementById('instagram-post-container');
+    
     var instagramContainer = document.createElement('div');
     instagramContainer.classList.add('instagram-post');
 
@@ -62,15 +145,23 @@ function createInstagramPost(url) {
     blockquote.classList.add('instagram-media');
     blockquote.setAttribute('data-instgrm-permalink', url);
     
+    // var script = document.createElement('script');
+    // script.setAttribute('async', '');
+    // script.setAttribute('src', '//www.instagram.com/embed.js');
+
+    // Load the Instagram embed script
     var script = document.createElement('script');
     script.setAttribute('async', '');
     script.setAttribute('src', '//www.instagram.com/embed.js');
+    script.onload = function() {
+        // After the script has loaded, re-run the initialization
+        window.instgrm.Embeds.process();
+    };
     
+    instagramPostContainer.appendChild(instagramContainer);
     instagramContainer.appendChild(blockquote);
     instagramContainer.appendChild(script);
 
-    var footer = document.querySelector('footer');
-    footer.insertAdjacentElement('beforebegin', instagramContainer);
+    // var footer = document.querySelector('footer');
+    instagramPostContainer.insertAdjacentElement('beforeend', instagramContainer);
 }
-
-loadSpreadSheet();

@@ -40,6 +40,10 @@ header {
     background-color: #7a6b00;
 }
 
+#instagram-post-container p {
+    text-align: center;
+}
+
 .instagram-post {
     display: flex;
     justify-content: center;
