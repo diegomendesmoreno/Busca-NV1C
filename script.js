@@ -5,11 +5,17 @@ function loadSpreadSheet() {
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheetName)}`;
 
     getInstagramData(url)
-      .then(jsonRows => {
-        const numRows = jsonRows.length;
-        console.log(`Number of rows: ${numRows}`);
-        createInstagramPost(jsonRows[2]['Link']);
-      });
+        .then(jsonRows => {
+            const numRows = jsonRows.length;
+            console.log(`Number of rows: ${numRows}`);
+
+            for(let i = 6; i <= 16; i++) {
+                createInstagramPost(jsonRows[i]['Link']);
+                console.log(`Name [${i}]: ${jsonRows[i]['Título/tema do vídeo']}`);
+                console.log(`Link [${i}]: ${jsonRows[i]['Link']}`);
+                console.log('');
+            }
+        });
 }
 
 function getInstagramData(url) {
@@ -63,8 +69,8 @@ function createInstagramPost(url) {
     instagramContainer.appendChild(blockquote);
     instagramContainer.appendChild(script);
 
-    var header = document.querySelector('header');
-    header.insertAdjacentElement('afterend', instagramContainer);
+    var footer = document.querySelector('footer');
+    footer.insertAdjacentElement('beforebegin', instagramContainer);
 }
 
 loadSpreadSheet();
