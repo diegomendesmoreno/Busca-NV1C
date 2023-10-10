@@ -1,0 +1,75 @@
+### Node ###
+# Dependency directories
+/node_modules
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Compiled binary addons
+/build/Release
+
+# Dependency directories
+/jspm_packages/
+/bower_components/
+/bower
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Grunt intermediate storage
+.grunt
+
+# Compiled TypeScript
+*.tsbuildinfo
+
+# Compiled Python
+__pycache__/
+
+# Dependency directories
+.pnp/
+.pnp.js
+
+# Optional npm cache directory
+.npm
+
+# Parcel
+.cache/
+dist/
+
+# Next.js
+/.next/
+
+# Nuxt.js
+/.nuxt/
+
+# Nest output directory
+/output/
+
+
+### Replit ###
+*.nix
+.replit
