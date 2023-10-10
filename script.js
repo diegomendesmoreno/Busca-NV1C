@@ -1,5 +1,6 @@
 let jsonData;
 
+// Waiting for the page to load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded');
 
@@ -61,9 +62,9 @@ function showfilteredPosts(lastSearch, filteredData) {
 
     // Create the filtered posts inside the container
     for(let i = 0; i < filteredData.length; i++) {
-        createInstagramPost(filteredData[i]['Título/tema do vídeo'], filteredData[i]['Link']);
-        console.log(`Título/tema do vídeo [${i}]: ${filteredData[i]['Título/tema do vídeo']}`);
-        console.log(`Link                 [${i}]: ${filteredData[i]['Link']}`);
+        createInstagramPost(filteredData[i]['Título/tema'], filteredData[i]['Link']);
+        console.log(`Título/tema [${i}]: ${filteredData[i]['Título/tema']}`);
+        console.log(`Link        [${i}]: ${filteredData[i]['Link']}`);
         console.log('');
     }
 }
@@ -77,7 +78,7 @@ function removeAccents(str) {
 function filterByKeyword(jsonData, keyword) {
     const normalizedKeyword = removeAccents(keyword.toLowerCase());
     return jsonData.filter(item => {
-        const title = removeAccents(item['Título/tema do vídeo'].toLowerCase());
+        const title = removeAccents(item['Título/tema'].toLowerCase());
         return title.includes(normalizedKeyword);
     });
 }
@@ -86,6 +87,7 @@ function filterByKeyword(jsonData, keyword) {
 function loadSpreadSheet() {
     const spreadsheetId = '1NPfi6o9JGCk6V_gmR4FE3mv7vMyrkUBdt1g_HtSUd8Y';
     const sheetName = 'Reels';
+    // const sheetName = 'Infográficos';
     
     const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheetName)}`;
 
@@ -113,7 +115,7 @@ function getInstagramData(url) {
 
                     const jsonRows = rows.slice(1).map(row => {
                         return {
-                            'Título/tema do vídeo': row.c[0].v,
+                            'Título/tema': row.c[0].v,
                             'Link': row.c[1].v
                         };
                     });

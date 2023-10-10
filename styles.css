@@ -26,11 +26,10 @@ header {
     border-radius: 50%;
 }
 
-.logo-title h2 {
+.logo-container h2 {
     margin-left: 10px;
     float: left;
 }
-
 
 .search-form {
     margin-top: 20px;
