@@ -61,9 +61,9 @@ function showfilteredPosts(lastSearch, filteredData) {
 
     // Create the filtered posts inside the container
     for(let i = 0; i < filteredData.length; i++) {
-        createInstagramPost(filteredData[i]['Link']);
-        console.log(`Name [${i}]: ${filteredData[i]['Título/tema do vídeo']}`);
-        console.log(`Link [${i}]: ${filteredData[i]['Link']}`);
+        createInstagramPost(filteredData[i]['Título/tema do vídeo'], filteredData[i]['Link']);
+        console.log(`Título/tema do vídeo [${i}]: ${filteredData[i]['Título/tema do vídeo']}`);
+        console.log(`Link                 [${i}]: ${filteredData[i]['Link']}`);
         console.log('');
     }
 }
@@ -136,19 +136,21 @@ function getInstagramData(url) {
 }
 
 
-function createInstagramPost(url) {
+function createInstagramPost(postTitle, url) {
     var instagramPostContainer = document.getElementById('instagram-post-container');
     
     var instagramContainer = document.createElement('div');
     instagramContainer.classList.add('instagram-post');
 
+    // Create the title
+    var postTitleH3 = document.createElement('h3');
+    postTitleH3.classList.add('post-title');
+    postTitleH3.innerHTML = postTitle;
+
+    // Create the Instagram embed
     var blockquote = document.createElement('blockquote');
     blockquote.classList.add('instagram-media');
     blockquote.setAttribute('data-instgrm-permalink', url);
-    
-    // var script = document.createElement('script');
-    // script.setAttribute('async', '');
-    // script.setAttribute('src', '//www.instagram.com/embed.js');
 
     // Load the Instagram embed script
     var script = document.createElement('script');
@@ -160,6 +162,7 @@ function createInstagramPost(url) {
     };
     
     instagramPostContainer.appendChild(instagramContainer);
+    instagramContainer.appendChild(postTitleH3);
     instagramContainer.appendChild(blockquote);
     instagramContainer.appendChild(script);
 

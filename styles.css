@@ -61,11 +61,18 @@ header {
 
 #instagram-post-container p {
     text-align: center;
+    color: gray;
 }
 
 .instagram-post {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 3%;
+}
+
+.post-title {
+    margin-bottom: 5px;
+    color: gray;
 }
