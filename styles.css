@@ -36,3 +36,10 @@ header {
 .search-button:hover {
     background-color: #0056b3;
 }
+
+.instagram-post {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
