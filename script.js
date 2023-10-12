@@ -1,4 +1,4 @@
-let jsonData;
+let jsonData = [];
 
 // Waiting for the page to load
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const keyword = document.getElementById('keyword-input').value;
         const filteredData = filterByKeyword(jsonData, keyword);
 
-        console.log(filteredData);
         if(filteredData.length === 0)
         {
             // No results found
@@ -65,6 +64,7 @@ function showfilteredPosts(lastSearch, filteredData) {
         createInstagramPost(filteredData[i]['Título/tema'], filteredData[i]['Link']);
         console.log(`Título/tema [${i}]: ${filteredData[i]['Título/tema']}`);
         console.log(`Link        [${i}]: ${filteredData[i]['Link']}`);
+        console.log(`Content     [${i}]: ${filteredData[i]['Content']}`);
         console.log('');
     }
 }
@@ -86,22 +86,23 @@ function filterByKeyword(jsonData, keyword) {
 
 function loadSpreadSheet() {
     const spreadsheetId = '1NPfi6o9JGCk6V_gmR4FE3mv7vMyrkUBdt1g_HtSUd8Y';
-    const sheetName = 'Reels';
-    // const sheetName = 'Infográficos';
+    const sheets = ['Reels', 'Infográficos'];
+
+    sheets.forEach(sheet => {
+        const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheet)}`;
+        
+        getInstagramData(url, sheet)
+            .then(jsonRows => {
+                const numRows = jsonRows.length;
+                console.log(`Loaded ${sheet} (${numRows} items)`);
     
-    const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheetName)}`;
-
-    getInstagramData(url)
-        .then(jsonRows => {
-            const numRows = jsonRows.length;
-            console.log(`Loaded Spreadsheet (${numRows})`);
-
-            jsonData = jsonRows;
-        });
+                jsonData.push(...jsonRows);
+            });
+    });
 }
 
 
-function getInstagramData(url) {
+function getInstagramData(url, contentType) {
     return axios.get(url)
         .then((response) => {
             const data = response.data;
@@ -116,7 +117,8 @@ function getInstagramData(url) {
                     const jsonRows = rows.slice(1).map(row => {
                         return {
                             'Título/tema': row.c[0].v,
-                            'Link': row.c[1].v
+                            'Link': row.c[1].v,
+                            'Content': contentType
                         };
                     });
 
