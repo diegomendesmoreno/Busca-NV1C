@@ -2,8 +2,7 @@ let jsonData = [];
 
 // Waiting for the page to load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded');
-
+    
     // Load the JSON
     loadSpreadSheet();
     
@@ -53,6 +52,10 @@ function showError(lastSearch) {
     // Show error message
     var instagramPostContainer = document.getElementById('instagram-post-container');
     instagramPostContainer.innerHTML = '<p>Nenhum resultado encontrado</p>';
+
+    // Reset footer
+    const footer = document.querySelector('footer');
+    footer.style.position = 'absolute';
 }
 
 
@@ -67,6 +70,10 @@ function showfilteredPosts(lastSearch, filteredData) {
         console.log(`Content     [${i}]: ${filteredData[i]['Content']}`);
         console.log('');
     }
+
+    // Reset footer
+    const footer = document.querySelector('footer');
+    footer.style.position = 'static';
 }
 
 
