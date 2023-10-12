@@ -96,7 +96,16 @@ footer {
     margin-bottom: 10px;
 }
 
-footer a {
+.social-icons img {
+    height: 30px;
+    margin: 0 10px;
+}
+
+.made-by {
+    margin-top: 10px;
+}
+
+.made-by a {
     color: #999;
     text-decoration: underline;
 }

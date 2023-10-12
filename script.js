@@ -163,11 +163,9 @@ function createInstagramPost(postTitle, url) {
         window.instgrm.Embeds.process();
     };
     
-    instagramPostContainer.appendChild(instagramContainer);
     instagramContainer.appendChild(postTitleH3);
     instagramContainer.appendChild(blockquote);
     instagramContainer.appendChild(script);
-
-    // var footer = document.querySelector('footer');
+    instagramPostContainer.appendChild(instagramContainer);
     instagramPostContainer.insertAdjacentElement('beforeend', instagramContainer);
 }
