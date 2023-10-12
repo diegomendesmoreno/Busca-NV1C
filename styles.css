@@ -3,6 +3,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -64,6 +67,10 @@ header {
     background-color: #7a6b00;
 }
 
+main {
+    flex-grow: 1;
+}
+
 #instagram-post-container p {
     text-align: center;
     color: gray;
@@ -86,9 +93,6 @@ footer {
     text-align: center;
     font-size: 1rem;
     color: #999;
-    position: absolute;
-    width: 100%;
-    bottom: 0;
     margin-bottom: 10px;
 }
 

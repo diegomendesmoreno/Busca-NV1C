@@ -40,9 +40,8 @@ function reloadItems(lastSearch) {
     // Create a new "instagram-post-container"
     const instagramPostContainer = document.createElement('div');
     instagramPostContainer.id = 'instagram-post-container';
-    document.body.appendChild(instagramPostContainer);
-    var footer = document.querySelector('footer');
-    footer.insertAdjacentElement('beforebegin', instagramPostContainer);
+    const main = document.querySelector('main');
+    main.appendChild(instagramPostContainer);
 }
 
 
@@ -52,10 +51,6 @@ function showError(lastSearch) {
     // Show error message
     var instagramPostContainer = document.getElementById('instagram-post-container');
     instagramPostContainer.innerHTML = '<p>Nenhum resultado encontrado</p>';
-
-    // Reset footer
-    const footer = document.querySelector('footer');
-    footer.style.position = 'absolute';
 }
 
 
@@ -70,10 +65,6 @@ function showfilteredPosts(lastSearch, filteredData) {
         console.log(`Content     [${i}]: ${filteredData[i]['Content']}`);
         console.log('');
     }
-
-    // Reset footer
-    const footer = document.querySelector('footer');
-    footer.style.position = 'static';
 }
 
 
