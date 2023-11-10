@@ -71,12 +71,12 @@ main {
     flex-grow: 1;
 }
 
-#instagram-post-container p {
+#content-post-container p {
     text-align: center;
     color: gray;
 }
 
-.instagram-post {
+.content-post {
     display: flex;
     flex-direction: column;
     justify-content: center;
