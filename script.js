@@ -84,7 +84,7 @@ function filterByKeyword(jsonData, keyword) {
 
 function loadSpreadSheet() {
     const spreadsheetId = '1NPfi6o9JGCk6V_gmR4FE3mv7vMyrkUBdt1g_HtSUd8Y';
-    const sheets = ['Reels', 'Infográficos'];
+    const sheets = ['Reels', 'Infográficos', 'Vídeos YouTube'];
 
     sheets.forEach(sheet => {
         const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&sheet=${encodeURIComponent(sheet)}`;
@@ -148,15 +148,17 @@ function createContentPost(postTitle, url, contentType) {
     var postTitleH3 = document.createElement('h3');
     postTitleH3.classList.add('post-title');
     postTitleH3.innerHTML = postTitle;
+    contentContainer.appendChild(postTitleH3);
 
-    // Create the Content embed
-    var blockquote = document.createElement('blockquote');
-    blockquote.classList.add('instagram-media');
-    blockquote.setAttribute('data-instgrm-permalink', url);
-
-    // Load the Content embed script
-    if(contentType === "Reels" || contentType === "Infográficos") {   
-        // Instagram type content
+    // Instagram type content
+    if(contentType === "Reels" || contentType === "Infográficos") {           
+        // Create the Content embed
+        var blockquote = document.createElement('blockquote');
+        blockquote.classList.add('instagram-media');
+        blockquote.setAttribute('data-instgrm-permalink', url);
+        contentContainer.appendChild(blockquote);
+        
+        // Load the Content embed script
         var script = document.createElement('script');
         script.setAttribute('async', '');
         script.setAttribute('src', '//www.instagram.com/embed.js');
@@ -164,11 +166,28 @@ function createContentPost(postTitle, url, contentType) {
             // After the script has loaded, re-run the initialization
             window.instgrm.Embeds.process();
         };
+        contentContainer.appendChild(script);
+    }
+    else {
+        // YouTube type content
+        var videoId = getVideoIdFromLink(url);
+        
+        var iframe = document.createElement('iframe');
+        iframe.width = "560";
+        iframe.height = "315";
+        iframe.src = "https://www.youtube.com/embed/" + videoId;;
+        iframe.allowFullscreen = true;
+
+        contentContainer.appendChild(iframe);
     }
     
-    contentContainer.appendChild(postTitleH3);
-    contentContainer.appendChild(blockquote);
-    contentContainer.appendChild(script);
     contentPostContainer.appendChild(contentContainer);
     contentPostContainer.insertAdjacentElement('beforeend', contentContainer);
+}
+
+
+function getVideoIdFromLink(link) {
+    var regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i;
+    var match = link.match(regex);
+    return match ? match[1] : null;
 }
